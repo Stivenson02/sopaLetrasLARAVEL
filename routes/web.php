@@ -12,5 +12,29 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('play.login');
 });
+
+
+
+Route::get('/home', 'HomeController@index');
+
+
+Route::post('play', [
+  'uses' => 'PlayController@index',
+  'as' => 'play_paht'
+]);
+
+Route::post('level', [
+  'uses' => 'PlayController@create',
+  'as' => 'level_paht'
+]);
+Route::post('save_play', [
+  'uses' => 'PlayController@store',
+  'as' => 'save_play_paht'
+]);
+
+Route::post('continue', [
+  'uses' => 'PlayController@show',
+  'as' => 'continue_paht'
+]);
