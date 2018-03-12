@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Play;
 
 class PlayController extends Controller
 {
@@ -13,8 +15,11 @@ class PlayController extends Controller
      */
     public function index(Request $request)
     {
+      $usuario = new User();
+      $usuario->name=$request->name;
+      $usuario->save();
       $palabra= $request->amplitud;
-        return view('play.play',['palabras'=>$palabra]);
+        return view('play.play',['palabras'=>$palabra, 'user'=>$usuario->id]);
     }
 
     /**
@@ -35,7 +40,14 @@ class PlayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+      $plays= new Play();
+      $plays->longitud=$request->level;
+      $plays->time=$request->time;
+      $plays->juego=implode(",",array_collapse($request->cadena));
+      $plays->user_id=$request->usuario;
+      $plays->save();
+        return implode(",",array_collapse($request->cadena));
     }
 
     /**

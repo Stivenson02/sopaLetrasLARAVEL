@@ -7,7 +7,8 @@
         <div class="temporizador">
         </div>
 <div id='words'></div>
-<div><button id='solve'>Solve Puzzle</button></div>
+<div><button id='solve'>Solve Puzzle</button><button id='fin'>Terminar</button></div>
+<div></div>
 
 <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/wordfind.js"></script>
@@ -41,15 +42,31 @@ for (var i = 0; i < longitud; i++) {
   var gamePuzzle = wordfindgame.create(newword, '#puzzle', '#words');
 
   $('#solve').click( function() {
-    wordfindgame.solve(gamePuzzle, words);
+    wordfindgame.solve(gamePuzzle, newword);
   });
-
   // create just a puzzle, without filling in the blanks and print to console
   var puzzle = wordfind.newPuzzle(
-    words,
+    newword,
     {height: 18, width:18, fillBlanks: false}
   );
   wordfind.print(puzzle);
+  $('#fin').click( function() {
+    var timePartida=$("#h1").html();
 
+    $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            url: '/save_play',
+            type: 'post',
+            data: {cadena: gamePuzzle, usuario: {{$user}}, time:timePartida, level:longitud},
+            success: function (data, textStatus, jqXHR) {
+                clearTimeout(t);
+                console.log(data);
+                location.href = "/fin";
+
+                }
+            });
+  });
 </script>
 @endsection

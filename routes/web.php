@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('play.login');
 });
 
+Route::get('/fin', function () {
+    return view('play.continue');
+});
+
 
 
 Route::get('/home', 'HomeController@index');
